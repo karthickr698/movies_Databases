@@ -11,25 +11,24 @@ $("#search").click(function () {
     if (title != "" && year == "") {
         var url = "http://www.omdbapi.com/?t=" + title + "&type=" + type + "&apikey=a06613a3"
     }
-    console.log(url)
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.send()
-    xhr.onload = function () {
-        if (xhr.status == 200) {
-            console.log(xhr.response)
-            var data = xhr.response
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "json",
+        success: function (data, xhr) {
+            console.log(xhr.status);
             prinData(data)
-        }
-        else {
-            console.log("Error Code is:" + xhr.status)
-        }
-    }
+
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
 })
 //print the JSON output
 function prinData(data) {
     $("#tableForm").empty()
-    var json = JSON.parse(data)
+    var json = data
     console.log(json)
     var keysData = Object.keys(json)
     console.log(keysData)
@@ -72,6 +71,5 @@ $("#reset").click(function () {
     $("#titleIn").val("")
     $("#yearIn").val("")
     $("#typeIn").val("movie")
-
-
 })
+
